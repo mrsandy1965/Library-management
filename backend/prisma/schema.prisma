@@ -17,14 +17,18 @@ model Book {
   bookid      Int      @id @default(autoincrement())
   title       String
   summary     String
-  ISBN        String 
+  isbn        String 
   url        String
+  authorid    Int
+  author      Author   @relation(fields: [authorid], references: [authorid])
+  genre  BookGenre[]
 }
 
 model Genre {
   genreid   Int      @id @default(autoincrement())
   name       String
   url        String  
+  books  BookGenre[]
 }
 model Author {
   authorid   Int      @id @default(autoincrement())
@@ -35,4 +39,12 @@ model Author {
   name      String
   lifeSpan  String
   url       String 
+  books     Book[]
+}
+model BookGenre{
+  book Book @relation(fields: [bookid], references: [bookid])
+  bookid Int
+  genre Genre @relation(fields: [genreid], references: [genreid])
+  genreid Int
+  @@id([bookid, genreid])
 }
